@@ -47,6 +47,11 @@ export interface PortfolioProject {
   primaryLabel?: string
   secondaryUrl?: string
   secondaryLabel?: string
+  demoRequest?: {
+    label: string
+    subject: string
+    body: string
+  }
 }
 
 export interface SkillGroup {

@@ -525,7 +525,7 @@ export default function App() {
         ))}
       </section>
 
-      <div className="desktop-hint"><Command size={13} /><span>Iconos alineados a la cuadrícula · <kbd>Ctrl</kbd> + <kbd>K</kbd> para buscar</span></div>
+      <div className="desktop-hint"><Command size={13} /><span><kbd>Ctrl</kbd> + <kbd>K</kbd> para buscar</span></div>
 
       {appDefinitions.map((definition) => (
         <WindowFrame

@@ -104,8 +104,12 @@ export const projects: PortfolioProject[] = [
       'RH, seguridad, usuarios y bitácora',
       'OCR de placas y reportes PDF/Excel',
     ],
-    primaryUrl: 'https://erp.appsalave.org/',
-    primaryLabel: 'Ver acceso al ERP',
+    demoRequest: {
+      label: 'Solicitar prueba del ERP',
+      subject: 'Solicitud de demostración — SalAve ERP',
+      body:
+        'Hola René,\n\nVi el caso de estudio de SalAve ERP en tu portafolio y me gustaría solicitar una demostración o prueba controlada.\n\nNombre / empresa:\nObjetivo de la prueba:\n\nGracias.',
+    },
   },
   {
     id: 'dotnetApi',
@@ -150,10 +154,11 @@ export const skillGroups: SkillGroup[] = [
   },
 ]
 
+// Son datos públicos del portafolio. Las variables permiten reemplazarlos por entorno.
 export const publicLinks = {
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ?? '',
-  github: process.env.NEXT_PUBLIC_GITHUB_URL?.trim() ?? '',
-  linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL?.trim() ?? '',
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || 'rene.salinas2112@gmail.com',
+  github: process.env.NEXT_PUBLIC_GITHUB_URL?.trim() || 'https://github.com/Poisons-sys',
+  linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL?.trim() || '',
 }
 
 export const getDefinition = (id: AppDefinition['id']) =>

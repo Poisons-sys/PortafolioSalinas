@@ -42,12 +42,12 @@ export function AboutApp({ openApp }: AppContentProps) {
           <div className="availability"><span /> Producto web · APIs · Integraciones</div>
           <p className="section-kicker">FULL STACK DEVELOPER · PRODUCT BUILDER</p>
           <h1>
-            Código que entiende
-            <span> la operación.</span>
+            Diseño y construyo
+            <span> productos web, APIs y software para operaciones.</span>
           </h1>
           <p className="about-lead">
-            Soy <strong>Rene Salinas Ramos</strong>. Diseño y construyo productos web de punta a punta:
-            interfaces, APIs, datos e integraciones que convierten procesos complejos en herramientas claras.
+            Soy <strong>René Salinas Ramos</strong>. Diseño y construyo productos web de punta a punta:
+            Frontend, Backend APIs, bases de datos e integraciones que convierten procesos complejos en herramientas claras.
           </p>
           <div className="hero-actions">
             <button type="button" className="primary-action" onClick={() => openApp('projects')}>
@@ -66,7 +66,7 @@ export function AboutApp({ openApp }: AppContentProps) {
           <div className="identity-orbit orbit-two" />
           <div className="identity-mark">RS</div>
           <div className="identity-meta">
-            <span>RENE SALINAS</span>
+            <span>RENÉ SALINAS</span>
             <small>Full Stack Developer</small>
           </div>
           <span className="identity-coordinate">WEB / API / SYSTEMS</span>
@@ -104,7 +104,7 @@ export function AboutApp({ openApp }: AppContentProps) {
           <article>
             <span className="focus-icon"><Workflow size={21} /></span>
             <h3>Software para operaciones</h3>
-            <p>Logística, ERP, reportes, roles, tiempo real y trazabilidad en una sola plataforma.</p>
+            <p>Logística, ERP, reportes, multiplataforma, tiempo real y trazabilidad en una sola plataforma.</p>
           </article>
         </div>
       </section>
@@ -141,7 +141,20 @@ interface ProjectCardProps {
   onOpen: () => void
 }
 
+function getDemoRequestUrl(project: PortfolioProject) {
+  if (!project.demoRequest || !publicLinks.email) return ''
+
+  const params = new URLSearchParams({
+    subject: project.demoRequest.subject,
+    body: project.demoRequest.body,
+  })
+
+  return `mailto:${publicLinks.email}?${params.toString()}`
+}
+
 function ProjectCard({ project, onOpen }: ProjectCardProps) {
+  const demoRequestUrl = getDemoRequestUrl(project)
+
   return (
     <article className="project-card">
       <ProjectVisual project={project.id} />
@@ -164,6 +177,11 @@ function ProjectCard({ project, onOpen }: ProjectCardProps) {
               Sitio <ExternalLink size={13} />
             </a>
           )}
+          {demoRequestUrl && (
+            <a href={demoRequestUrl} className="secondary-action small">
+              Solicitar prueba <Mail size={13} />
+            </a>
+          )}
         </div>
       </div>
     </article>
@@ -175,7 +193,7 @@ export function ProjectsApp({ openApp }: AppContentProps) {
     <div className="app-page projects-app">
       <header className="app-page-header projects-header">
         <div>
-          <p className="section-kicker">SELECCIÓN 2026</p>
+          <p className="section-kicker">Mis Logros</p>
           <h1>Proyectos que resuelven trabajo real.</h1>
           <p>
             De logística y visualización de carga a un ERP modular con backend .NET:
@@ -216,9 +234,9 @@ export function SkillsApp() {
     <div className="app-page skills-app">
       <header className="app-page-header skills-header">
         <div>
-          <p className="section-kicker">CAPACIDADES</p>
+          <p className="section-kicker">HABILIDADES</p>
           <h1>Un stack para construir el sistema completo.</h1>
-          <p>Frontend, backend, datos y lenguajes de sistemas organizados por la parte del problema que resuelven.</p>
+          <p>Frontend, backend, bases de datos y lenguajes de sistemas organizados por la parte del problema que resuelven.</p>
         </div>
         <label className="skill-search">
           <span>Buscar tecnología</span>
@@ -229,7 +247,7 @@ export function SkillsApp() {
       <div className="skill-overview">
         <span><BadgeCheck size={15} /> Web & producto</span>
         <span><BadgeCheck size={15} /> APIs .NET</span>
-        <span><BadgeCheck size={15} /> Tiempo real</span>
+        <span><BadgeCheck size={15} /> Bases de datos</span>
         <span><BadgeCheck size={15} /> Sistemas</span>
       </div>
 
@@ -265,6 +283,7 @@ export function SkillsApp() {
 
 export function CaseStudyApp({ projectId }: { projectId: PortfolioProject['id'] }) {
   const project = getProject(projectId)
+  const demoRequestUrl = getDemoRequestUrl(project)
   const isSalave = project.id === 'salave'
   const isLoadLogic = project.id === 'loadLogic'
 
@@ -287,6 +306,11 @@ export function CaseStudyApp({ projectId }: { projectId: PortfolioProject['id'] 
             {project.secondaryUrl && (
               <a className="secondary-action" href={project.secondaryUrl} target="_blank" rel="noreferrer">
                 {project.secondaryLabel} <ExternalLink size={14} />
+              </a>
+            )}
+            {demoRequestUrl && (
+              <a className="primary-action" href={demoRequestUrl}>
+                {project.demoRequest?.label} <Mail size={15} />
               </a>
             )}
           </div>
@@ -380,10 +404,10 @@ const rsAscii = String.raw`
       :::::::::::::            :::::::::::
      ::::::::::::::::        ::::::::::::::
      ::::        :::::      ::::::      :::
-    ::::          ::::     ::::
+    ::::          ::::     :::::
     ::::          ::::     ::::::
    ::::        ::::::       :::::::
-   ::::::::::::::::         ::::::::
+   ::::::::::::::::          :::::::
   ::::::::::::                 :::::::
   ::::    :::::                   ::::::
  ::::      :::::       ::          ::::::
@@ -444,7 +468,7 @@ function NeofetchOutput() {
   }, [])
 
   const specs = [
-    ['OS', 'ReneOS Web 2.6 “Aster”'],
+    ['OS', 'ReneOS Web 2.0 “SSL Aether”'],
     ['Host', 'Portfolio Browser Runtime'],
     ['Kernel', 'RS WebKernel 6.13'],
     ['Shell', 'rs-shell 2.0'],
@@ -489,14 +513,14 @@ const terminalHelp = [
   'date                 fecha y hora local',
   'clear                limpia la terminal',
   '',
-  'Apps: about, projects, skills, load-logic, salave, api, contact',
+  'app: about, projects, skills, load-logic, salave, api, contact',
 ]
 
 export function TerminalApp({ openApp }: AppContentProps) {
   const [entries, setEntries] = useState<TerminalEntry[]>([
     {
       lines: [
-        'ReneOS Web Terminal 2.6.0',
+        'ReneOS Web Terminal v2.0',
         'Sesión iniciada · escribe “help” para explorar.',
       ],
       tone: 'accent',
@@ -538,9 +562,9 @@ export function TerminalApp({ openApp }: AppContentProps) {
       case 'whoami':
       case 'perfil':
         entry.lines = [
-          'Rene Salinas Ramos',
+          'René Salinas Ramos',
           'Full Stack Developer · Web, APIs y software para operaciones.',
-          'Enfoque actual: logística, ERP, C#/.NET y producto web.',
+          'Enfoque actual: logística, ERP, C#/.NET, producto web y Bases de Datos.',
         ]
         break
       case 'stack':
@@ -617,12 +641,27 @@ export function TerminalApp({ openApp }: AppContentProps) {
   )
 }
 
+function getContactHandle(url: string, fallback: string) {
+  if (!url) return fallback
+
+  try {
+    const segments = new URL(url).pathname.split('/').filter(Boolean)
+    const profile = segments.at(-1)
+    return profile ? `@${decodeURIComponent(profile)}` : fallback
+  } catch {
+    return fallback
+  }
+}
+
 export function ContactApp({ openApp }: AppContentProps) {
   const [copied, setCopied] = useState(false)
-  const hasPublicContact = Boolean(publicLinks.email || publicLinks.github || publicLinks.linkedin)
+  const activeContactCount = [publicLinks.email, publicLinks.github, publicLinks.linkedin].filter(Boolean).length
+  const hasPublicContact = activeContactCount > 0
+  const githubHandle = getContactHandle(publicLinks.github, 'Perfil de GitHub')
+  const linkedinHandle = getContactHandle(publicLinks.linkedin, 'Perfil de LinkedIn')
 
   const copyIntro = async () => {
-    const text = 'Hola Rene, vi tu portafolio y me gustaría conversar sobre un proyecto.'
+    const text = 'Hola René, vi tu portafolio y me gustaría conversar sobre un proyecto contigo.'
     try {
       if (!navigator.clipboard) throw new Error('Clipboard API unavailable')
       await navigator.clipboard.writeText(text)
@@ -639,24 +678,35 @@ export function ContactApp({ openApp }: AppContentProps) {
         <span className="contact-spark"><Sparkles size={26} /></span>
         <p className="section-kicker">HABLEMOS</p>
         <h1>¿Tienes un proceso complejo que necesita una solución clara?</h1>
-        <p>Me interesa colaborar en producto web, herramientas internas, APIs e integraciones para operaciones reales.</p>
+        <p>Me interesa colaborar en productos web, herramientas internas, APIs, Bases de datos e integraciones para operaciones reales.</p>
         <div className="availability large"><span /> Disponible para conversar</div>
       </section>
+
+      <div className="contact-directory-heading">
+        <div>
+          <p className="section-kicker">CANALES DIRECTOS</p>
+          <h2>Contactos configurados</h2>
+        </div>
+        <span className={hasPublicContact ? 'is-active' : undefined}>
+          <CheckCircle2 size={14} />
+          {activeContactCount} {activeContactCount === 1 ? 'canal activo' : 'canales activos'}
+        </span>
+      </div>
 
       <div className="contact-grid">
         {publicLinks.email && (
           <a href={`mailto:${publicLinks.email}`} className="contact-channel">
-            <span><Mail size={20} /></span><div><small>CORREO</small><strong>{publicLinks.email}</strong></div><ExternalLink size={15} />
+            <span><Mail size={20} /></span><div><small>CORREO · CONFIGURADO</small><strong>{publicLinks.email}</strong></div><ExternalLink size={15} />
           </a>
         )}
         {publicLinks.github && (
           <a href={publicLinks.github} target="_blank" rel="noreferrer" className="contact-channel">
-            <span><GitBranch size={20} /></span><div><small>CÓDIGO</small><strong>GitHub</strong></div><ExternalLink size={15} />
+            <span><GitBranch size={20} /></span><div><small>GITHUB · CONFIGURADO</small><strong>{githubHandle}</strong></div><ExternalLink size={15} />
           </a>
         )}
         {publicLinks.linkedin && (
           <a href={publicLinks.linkedin} target="_blank" rel="noreferrer" className="contact-channel">
-            <span><BriefcaseBusiness size={20} /></span><div><small>RED PROFESIONAL</small><strong>LinkedIn</strong></div><ExternalLink size={15} />
+            <span><BriefcaseBusiness size={20} /></span><div><small>LINKEDIN · CONFIGURADO</small><strong>{linkedinHandle}</strong></div><ExternalLink size={15} />
           </a>
         )}
         {!hasPublicContact && (
