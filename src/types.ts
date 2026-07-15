@@ -4,6 +4,7 @@ export type AppId =
   | 'skills'
   | 'terminal'
   | 'contact'
+  | 'resume'
   | 'loadLogic'
   | 'salave'
   | 'dotnetApi'

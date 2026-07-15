@@ -7,7 +7,9 @@ import {
   Clipboard,
   Code2,
   Database,
+  Download,
   ExternalLink,
+  FileText,
   GitBranch,
   Globe2,
   Layers3,
@@ -513,7 +515,7 @@ const terminalHelp = [
   'date                 fecha y hora local',
   'clear                limpia la terminal',
   '',
-  'app: about, projects, skills, load-logic, salave, api, contact',
+  'app: about, projects, skills, load-logic, salave, api, contact, cv',
 ]
 
 export function TerminalApp({ openApp }: AppContentProps) {
@@ -537,6 +539,7 @@ export function TerminalApp({ openApp }: AppContentProps) {
   const appAliases: Record<string, AppId> = useMemo(() => ({
     about: 'about', perfil: 'about', projects: 'projects', proyectos: 'projects',
     skills: 'skills', stack: 'skills', terminal: 'terminal', contact: 'contact', contacto: 'contact',
+    cv: 'resume', resume: 'resume', curriculum: 'resume', 'currículum': 'resume',
     'load-logic': 'loadLogic', loadlogic: 'loadLogic', salave: 'salave', erp: 'salave', api: 'dotnetApi', dotnet: 'dotnetApi',
   }), [])
 
@@ -641,6 +644,43 @@ export function TerminalApp({ openApp }: AppContentProps) {
   )
 }
 
+const resumeUrl = '/ReneSalinasRamosCV.pdf'
+
+export function ResumeApp() {
+  return (
+    <div className="resume-app">
+      <header className="resume-toolbar">
+        <div>
+          <span className="resume-file-icon"><FileText size={19} /></span>
+          <div>
+            <strong>ReneSalinasRamosCV.pdf</strong>
+            <small>Currículum profesional · PDF</small>
+          </div>
+        </div>
+        <nav aria-label="Acciones del currículum">
+          <a href={resumeUrl} target="_blank" rel="noreferrer">
+            <ExternalLink size={15} /> Abrir en navegador
+          </a>
+          <a href={resumeUrl} download="ReneSalinasRamosCV.pdf" className="resume-download">
+            <Download size={15} /> Descargar PDF
+          </a>
+        </nav>
+      </header>
+
+      <div className="resume-preview">
+        <iframe
+          src={`${resumeUrl}#view=FitH&toolbar=0`}
+          title="Vista previa del currículum de René Salinas Ramos"
+        />
+        <p>
+          Si el navegador no muestra la vista previa,{' '}
+          <a href={resumeUrl} target="_blank" rel="noreferrer">abre el currículum en una pestaña nueva</a>.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function getContactHandle(url: string, fallback: string) {
   if (!url) return fallback
 
@@ -718,6 +758,9 @@ export function ContactApp({ openApp }: AppContentProps) {
         )}
         <button type="button" className="contact-channel" onClick={() => openApp('projects')}>
           <span><Rocket size={20} /></span><div><small>TRABAJO RECIENTE</small><strong>Ver proyectos</strong></div><ArrowRight size={15} />
+        </button>
+        <button type="button" className="contact-channel" onClick={() => openApp('resume')}>
+          <span><FileText size={20} /></span><div><small>CURRÍCULUM · PDF</small><strong>Ver experiencia profesional</strong></div><ArrowRight size={15} />
         </button>
       </div>
 

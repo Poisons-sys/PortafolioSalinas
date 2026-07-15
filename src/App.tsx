@@ -6,6 +6,7 @@ import {
   ChevronUp,
   CircleUserRound,
   Command,
+  FileText,
   FolderKanban,
   Layers3,
   Mail,
@@ -26,14 +27,15 @@ import {
   CaseStudyApp,
   ContactApp,
   ProjectsApp,
+  ResumeApp,
   SkillsApp,
   TerminalApp,
 } from './components/AppContent'
 import { WindowFrame } from './components/WindowFrame'
 import type { AppId, AppWindow } from './types'
 
-const desktopApps = ['about', 'projects', 'loadLogic', 'salave', 'skills', 'terminal', 'contact'] as const satisfies readonly AppId[]
-const pinnedApps: AppId[] = ['about', 'projects', 'skills', 'terminal']
+const desktopApps = ['about', 'projects', 'loadLogic', 'salave', 'skills', 'terminal', 'contact', 'resume'] as const satisfies readonly AppId[]
+const pinnedApps: AppId[] = ['about', 'projects', 'skills', 'terminal', 'resume']
 
 type DesktopAppId = (typeof desktopApps)[number]
 
@@ -61,6 +63,7 @@ const defaultIconPositions: IconPositions = {
   skills: { x: 108, y: 20 },
   terminal: { x: 108, y: 108 },
   contact: { x: 108, y: 196 },
+  resume: { x: 108, y: 284 },
 }
 
 function clampIconPosition(position: IconPosition, width: number, height: number): IconPosition {
@@ -125,6 +128,7 @@ function AppGlyph({ id, size = 22 }: { id: AppId; size?: number }) {
     case 'skills': return <Layers3 {...props} />
     case 'terminal': return <TerminalSquare {...props} />
     case 'contact': return <Mail {...props} />
+    case 'resume': return <FileText {...props} />
     case 'loadLogic': return <Truck {...props} />
     case 'salave': return <Boxes {...props} />
     case 'dotnetApi': return <Braces {...props} />
@@ -179,6 +183,7 @@ function AppContent({ id, openApp }: { id: AppId; openApp: (id: AppId) => void }
     case 'skills': return <SkillsApp />
     case 'terminal': return <TerminalApp openApp={openApp} />
     case 'contact': return <ContactApp openApp={openApp} />
+    case 'resume': return <ResumeApp />
     case 'loadLogic': return <CaseStudyApp projectId="loadLogic" />
     case 'salave': return <CaseStudyApp projectId="salave" />
     case 'dotnetApi': return <CaseStudyApp projectId="dotnetApi" />

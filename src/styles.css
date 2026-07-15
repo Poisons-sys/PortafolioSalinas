@@ -382,6 +382,11 @@ input:focus-visible {
   background: linear-gradient(145deg, #e46e36, #b63d4c);
 }
 
+.app-icon-resume {
+  color: #fff7f3;
+  background: linear-gradient(145deg, #d85845, #9d2838);
+}
+
 .desktop-hint {
   position: absolute;
   right: 30px;
@@ -2110,6 +2115,147 @@ input:focus-visible {
   background: transparent;
   caret-color: #45d6b8;
   font-family: var(--font-mono);
+}
+
+.resume-app {
+  display: flex;
+  min-height: 100%;
+  height: 100%;
+  flex-direction: column;
+  color: var(--text);
+  background: var(--window-solid);
+}
+
+.resume-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-soft);
+}
+
+.resume-toolbar > div,
+.resume-toolbar nav,
+.resume-toolbar a {
+  display: flex;
+  align-items: center;
+}
+
+.resume-toolbar > div {
+  min-width: 0;
+  gap: 10px;
+}
+
+.resume-toolbar > div > div {
+  min-width: 0;
+}
+
+.resume-toolbar strong,
+.resume-toolbar small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resume-toolbar strong {
+  font-size: 11px;
+}
+
+.resume-toolbar small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.resume-file-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #fff7f3;
+  border-radius: 9px;
+  background: linear-gradient(145deg, #d85845, #9d2838);
+}
+
+.resume-toolbar nav {
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.resume-toolbar a {
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 12px;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 9px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.resume-toolbar a:hover {
+  border-color: var(--accent);
+}
+
+.resume-toolbar .resume-download {
+  color: #061512;
+  border-color: transparent;
+  background: var(--accent);
+}
+
+.resume-preview {
+  position: relative;
+  min-height: 420px;
+  flex: 1;
+  padding: 14px;
+  background: #22272e;
+}
+
+.resume-preview iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  border: 0;
+  border-radius: 6px;
+  background: white;
+}
+
+.resume-preview p {
+  display: none;
+  margin: 0;
+  color: #dce7e4;
+  font-size: 10px;
+}
+
+.resume-preview a {
+  color: #7ee5cf;
+}
+
+@container appcontent (max-width: 680px) {
+  .resume-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .resume-toolbar nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .resume-toolbar a {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .resume-preview {
+    padding: 8px;
+  }
 }
 
 .contact-app {

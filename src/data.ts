@@ -37,6 +37,13 @@ export const appDefinitions: AppDefinition[] = [
     size: { width: 720, height: 600 },
   },
   {
+    id: 'resume',
+    title: 'Currículum — René Salinas Ramos',
+    shortTitle: 'Currículum',
+    description: 'Experiencia, formación y habilidades profesionales.',
+    size: { width: 920, height: 720 },
+  },
+  {
     id: 'loadLogic',
     title: 'Caso de estudio — Load Logic',
     shortTitle: 'Load Logic',
