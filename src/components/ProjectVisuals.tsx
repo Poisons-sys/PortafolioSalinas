@@ -1,4 +1,5 @@
 import { Braces, Check, PackageCheck, Radio, ShieldCheck, Truck } from 'lucide-react'
+import { useLanguage } from '../i18n'
 
 interface ProjectVisualProps {
   project: 'loadLogic' | 'salave' | 'dotnetApi'
@@ -6,11 +7,12 @@ interface ProjectVisualProps {
 }
 
 function LoadLogicVisual({ compact = false }: { compact?: boolean }) {
+  const { tr } = useLanguage()
   return (
     <div className={`project-visual load-logic-visual ${compact ? 'is-compact' : ''}`} aria-hidden="true">
       <div className="visual-topbar">
         <span className="visual-brand"><Truck size={13} /> LOAD LOGIC</span>
-        <span className="visual-live"><i /> plan activo</span>
+        <span className="visual-live"><i /> {tr('plan activo')}</span>
       </div>
       <div className="load-visual-grid">
         <div className="trailer-view">
@@ -25,9 +27,9 @@ function LoadLogicVisual({ compact = false }: { compact?: boolean }) {
           <div className="trailer-axis"><span /><span /></div>
         </div>
         <div className="load-kpis">
-          <span>UTILIZACIÓN <strong>88%</strong></span>
-          <span>BALANCE <strong>49 / 51</strong></span>
-          <span className="ok"><Check size={11} /> LISTO</span>
+          <span>{tr('UTILIZACIÓN')} <strong>88%</strong></span>
+          <span>{tr('BALANCE')} <strong>49 / 51</strong></span>
+          <span className="ok"><Check size={11} /> {tr('LISTO')}</span>
         </div>
       </div>
     </div>
@@ -35,6 +37,7 @@ function LoadLogicVisual({ compact = false }: { compact?: boolean }) {
 }
 
 function SalaveVisual({ compact = false }: { compact?: boolean }) {
+  const { tr } = useLanguage()
   return (
     <div className={`project-visual salave-visual ${compact ? 'is-compact' : ''}`} aria-hidden="true">
       <aside className="salave-sidebar">
@@ -46,13 +49,13 @@ function SalaveVisual({ compact = false }: { compact?: boolean }) {
       </aside>
       <div className="salave-dashboard">
         <div className="salave-heading">
-          <span>OPERACIÓN SALAVE</span>
-          <i><Radio size={10} /> tiempo real</i>
+          <span>{tr('OPERACIÓN SALAVE')}</span>
+          <i><Radio size={10} /> {tr('tiempo real')}</i>
         </div>
         <div className="salave-cards">
-          <div><small>Módulos</small><strong>10+</strong></div>
-          <div><small>Roles</small><strong>06</strong></div>
-          <div><small>Estado</small><strong>LIVE</strong></div>
+          <div><small>{tr('Módulos')}</small><strong>10+</strong></div>
+          <div><small>{tr('Roles')}</small><strong>06</strong></div>
+          <div><small>{tr('Estado')}</small><strong>{tr('LIVE')}</strong></div>
         </div>
         <div className="salave-chart">
           <span style={{ height: '38%' }} />
@@ -68,6 +71,7 @@ function SalaveVisual({ compact = false }: { compact?: boolean }) {
 }
 
 function DotnetVisual({ compact = false }: { compact?: boolean }) {
+  const { tr } = useLanguage()
   return (
     <div className={`project-visual dotnet-visual ${compact ? 'is-compact' : ''}`} aria-hidden="true">
       <div className="code-head">
@@ -82,7 +86,7 @@ function DotnetVisual({ compact = false }: { compact?: boolean }) {
         <span>app.<em>MapControllers</em>();</span>
         <span>app.<em>Run</em>();</span>
       </div>
-      <div className="code-status"><ShieldCheck size={12} /> API ONLINE <PackageCheck size={12} /></div>
+      <div className="code-status"><ShieldCheck size={12} /> {tr('API ONLINE')} <PackageCheck size={12} /></div>
     </div>
   )
 }

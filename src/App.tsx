@@ -9,6 +9,7 @@ import {
   FileText,
   FolderKanban,
   Layers3,
+  Languages,
   Mail,
   Moon,
   PanelBottom,
@@ -32,6 +33,7 @@ import {
   TerminalApp,
 } from './components/AppContent'
 import { WindowFrame } from './components/WindowFrame'
+import { LanguageProvider, languageOptions, useLanguage, type Language } from './i18n'
 import type { AppId, AppWindow } from './types'
 
 const desktopApps = ['about', 'projects', 'loadLogic', 'salave', 'skills', 'terminal', 'contact', 'resume'] as const satisfies readonly AppId[]
@@ -163,25 +165,27 @@ function createInitialWindows(): Record<AppId, AppWindow> {
 }
 
 function BootScreen({ onSkip }: { onSkip: () => void }) {
+  const { tr } = useLanguage()
   return (
-    <div className="boot-screen" role="status" aria-label="Iniciando portafolio">
+    <div className="boot-screen" role="status" aria-label={tr('Iniciando portafolio')}>
       <div className="boot-mark"><span>R</span><i /></div>
       <div className="boot-copy">
         <strong>RENE <span>WORKSPACE</span></strong>
-        <small>Preparando el entorno...</small>
+        <small>{tr('Preparando el entorno...')}</small>
       </div>
       <div className="boot-progress"><i /></div>
-      <button type="button" onClick={onSkip}>Omitir</button>
+      <button type="button" onClick={onSkip}>{tr('Omitir')}</button>
     </div>
   )
 }
 
 function AppContent({ id, openApp }: { id: AppId; openApp: (id: AppId) => void }) {
+  const { language } = useLanguage()
   switch (id) {
     case 'about': return <AboutApp openApp={openApp} />
     case 'projects': return <ProjectsApp openApp={openApp} />
     case 'skills': return <SkillsApp />
-    case 'terminal': return <TerminalApp openApp={openApp} />
+    case 'terminal': return <TerminalApp key={language} openApp={openApp} />
     case 'contact': return <ContactApp openApp={openApp} />
     case 'resume': return <ResumeApp />
     case 'loadLogic': return <CaseStudyApp projectId="loadLogic" />
@@ -211,6 +215,7 @@ interface IconDragState {
 
 function DesktopShortcut({ id, position, selected, onOpen, onSelect, onPositionChange }: DesktopShortcutProps) {
   const definition = getDefinition(id)
+  const { tr } = useLanguage()
   const dragState = useRef<IconDragState | null>(null)
   const suppressOpenUntil = useRef(0)
   const [dragging, setDragging] = useState(false)
@@ -288,12 +293,12 @@ function DesktopShortcut({ id, position, selected, onOpen, onSelect, onPositionC
           onOpen()
         }
       }}
-      aria-label={`Abrir ${definition.shortTitle}`}
+      aria-label={tr('Abrir {name}', { name: tr(definition.shortTitle) })}
       aria-pressed={selected}
-      title={`${definition.shortTitle} · alineado a la cuadrícula`}
+      title={tr('{name} · alineado a la cuadrícula', { name: tr(definition.shortTitle) })}
     >
       <span className={`desktop-app-icon app-icon-${id}`}><AppGlyph id={id} size={29} /></span>
-      <span>{definition.shortTitle}</span>
+      <span>{tr(definition.shortTitle)}</span>
     </button>
   )
 }
@@ -305,10 +310,11 @@ interface LauncherProps {
 
 function Launcher({ openApp, onClose }: LauncherProps) {
   const [query, setQuery] = useState('')
+  const { locale, tr } = useLanguage()
   const filteredApps = appDefinitions.filter((definition) => {
     if (definition.hideFromLauncher) return false
-    const value = `${definition.shortTitle} ${definition.description}`.toLocaleLowerCase('es')
-    return value.includes(query.toLocaleLowerCase('es'))
+    const value = `${tr(definition.shortTitle)} ${tr(definition.description)}`.toLocaleLowerCase(locale)
+    return value.includes(query.toLocaleLowerCase(locale))
   })
 
   const launch = (id: AppId) => {
@@ -317,23 +323,23 @@ function Launcher({ openApp, onClose }: LauncherProps) {
   }
 
   return (
-    <aside className="launcher" aria-label="Lanzador de aplicaciones">
+    <aside className="launcher" aria-label={tr('Lanzador de aplicaciones')}>
       <header className="launcher-profile">
         <div className="launcher-avatar">RS</div>
-        <div><strong>Rene Salinas</strong><span>Full Stack Developer</span></div>
-        <button type="button" onClick={onClose} aria-label="Cerrar lanzador"><X size={16} /></button>
+        <div><strong>Rene Salinas</strong><span>{tr('Full Stack Developer')}</span></div>
+        <button type="button" onClick={onClose} aria-label={tr('Cerrar lanzador')}><X size={16} /></button>
       </header>
       <label className="launcher-search">
         <Search size={16} />
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar aplicaciones..." aria-label="Buscar aplicaciones" autoFocus />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={tr('Buscar aplicaciones...')} aria-label={tr('Buscar aplicaciones')} autoFocus />
         <kbd>ESC</kbd>
       </label>
-      <div className="launcher-section-title"><span>APLICACIONES</span><small>{filteredApps.length}</small></div>
+      <div className="launcher-section-title"><span>{tr('APLICACIONES')}</span><small>{filteredApps.length}</small></div>
       <div className="launcher-apps">
         {filteredApps.map((definition) => (
           <button type="button" key={definition.id} onClick={() => launch(definition.id)}>
             <span className={`launcher-app-icon app-icon-${definition.id}`}><AppGlyph id={definition.id} size={20} /></span>
-            <span><strong>{definition.shortTitle}</strong><small>{definition.description}</small></span>
+            <span><strong>{tr(definition.shortTitle)}</strong><small>{tr(definition.description)}</small></span>
             <ChevronUp size={14} className="launcher-arrow" />
           </button>
         ))}
@@ -344,19 +350,82 @@ function Launcher({ openApp, onClose }: LauncherProps) {
 
 function Clock() {
   const [now, setNow] = useState(new Date())
+  const { locale } = useLanguage()
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000)
     return () => window.clearInterval(timer)
   }, [])
   return (
     <time dateTime={now.toISOString()} className="taskbar-clock">
-      <strong>{new Intl.DateTimeFormat('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false }).format(now)}</strong>
-      <span>{new Intl.DateTimeFormat('es-MX', { day: '2-digit', month: 'short' }).format(now)}</span>
+      <strong>{new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', hour12: false }).format(now)}</strong>
+      <span>{new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'short' }).format(now)}</span>
     </time>
   )
 }
 
-export default function App() {
+function LanguageSelector() {
+  const { language, option, setLanguage, tr } = useLanguage()
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const closeMenu = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('pointerdown', closeMenu)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeMenu)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [])
+
+  const chooseLanguage = (nextLanguage: Language) => {
+    setLanguage(nextLanguage)
+    setOpen(false)
+  }
+
+  return (
+    <div className="language-selector" ref={rootRef}>
+      {open && (
+        <div className="language-menu" role="menu" aria-label={tr('Seleccionar idioma')}>
+          <div className="language-menu-heading"><Languages size={15} /><span>{tr('Idioma')}</span></div>
+          {languageOptions.map((item) => (
+            <button
+              type="button"
+              role="menuitemradio"
+              aria-checked={language === item.code}
+              className={language === item.code ? 'is-active' : undefined}
+              key={item.code}
+              onClick={() => chooseLanguage(item.code)}
+            >
+              <span>{item.shortCode}</span>
+              <strong>{item.name}</strong>
+              <i aria-hidden="true">{language === item.code ? '✓' : ''}</i>
+            </button>
+          ))}
+        </div>
+      )}
+      <button
+        type="button"
+        className={open ? 'is-active' : undefined}
+        onClick={() => setOpen((current) => !current)}
+        aria-label={tr('Idioma actual: {language}', { language: option.name })}
+        title={tr('Cambiar idioma')}
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <span>{option.shortCode}</span>
+      </button>
+    </div>
+  )
+}
+
+function WorkspaceApp() {
+  const { tr } = useLanguage()
   const [windows, setWindows] = useState<Record<AppId, AppWindow>>(createInitialWindows)
   const [launcherOpen, setLauncherOpen] = useState(false)
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
@@ -516,7 +585,7 @@ export default function App() {
         if (event.target === event.currentTarget) setSelectedIcon(null)
       }}
     >
-      <section className="desktop-shortcuts" aria-label="Accesos directos">
+      <section className="desktop-shortcuts" aria-label={tr('Accesos directos')}>
         {desktopApps.map((id) => (
           <DesktopShortcut
             key={id}
@@ -530,12 +599,17 @@ export default function App() {
         ))}
       </section>
 
-      <div className="desktop-hint"><Command size={13} /><span><kbd>Ctrl</kbd> + <kbd>K</kbd> para buscar</span></div>
+      <div className="desktop-hint"><Command size={13} /><span><kbd>Ctrl</kbd> + <kbd>K</kbd> {tr('para buscar')}</span></div>
 
       {appDefinitions.map((definition) => (
         <WindowFrame
           key={definition.id}
-          definition={definition}
+          definition={{
+            ...definition,
+            title: tr(definition.title),
+            shortTitle: tr(definition.shortTitle),
+            description: tr(definition.description),
+          }}
           windowState={windows[definition.id]}
           icon={<AppGlyph id={definition.id} size={16} />}
           onFocus={() => focusWindow(definition.id)}
@@ -550,15 +624,15 @@ export default function App() {
       ))}
 
       {launcherOpen && <Launcher openApp={openApp} onClose={() => setLauncherOpen(false)} />}
-      {launcherOpen && <button type="button" className="launcher-backdrop" aria-label="Cerrar lanzador" onClick={() => setLauncherOpen(false)} />}
+      {launcherOpen && <button type="button" className="launcher-backdrop" aria-label={tr('Cerrar lanzador')} onClick={() => setLauncherOpen(false)} />}
 
-      <nav className="taskbar" aria-label="Barra de tareas">
-        <button type="button" className={`launcher-button ${launcherOpen ? 'is-active' : ''}`} onClick={() => setLauncherOpen((open) => !open)} aria-label="Abrir lanzador">
+      <nav className="taskbar" aria-label={tr('Barra de tareas')}>
+        <button type="button" className={`launcher-button ${launcherOpen ? 'is-active' : ''}`} onClick={() => setLauncherOpen((open) => !open)} aria-label={tr('Abrir lanzador')}>
           <span>R</span>
         </button>
         <div className="taskbar-pinned">
           {pinnedApps.map((id) => (
-            <button type="button" key={id} className={windows[id].isOpen ? 'is-open' : ''} onClick={() => handleTaskButton(id)} aria-label={getDefinition(id).shortTitle} title={getDefinition(id).shortTitle}>
+            <button type="button" key={id} className={windows[id].isOpen ? 'is-open' : ''} onClick={() => handleTaskButton(id)} aria-label={tr(getDefinition(id).shortTitle)} title={tr(getDefinition(id).shortTitle)}>
               <span className={`taskbar-app-icon app-icon-${id}`}><AppGlyph id={id} size={20} /></span>
             </button>
           ))}
@@ -568,19 +642,28 @@ export default function App() {
             const definition = getDefinition(windowState.id)
             return (
               <button type="button" key={windowState.id} className={windowState.isMinimized ? 'is-minimized' : ''} onClick={() => handleTaskButton(windowState.id)}>
-                <AppGlyph id={windowState.id} size={15} /><span>{definition.shortTitle}</span>
+                <AppGlyph id={windowState.id} size={15} /><span>{tr(definition.shortTitle)}</span>
               </button>
             )
           })}
         </div>
         <div className="system-tray">
-          <button type="button" onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} aria-label="Cambiar tema" title="Cambiar tema">
+          <button type="button" onClick={() => setTheme((current) => current === 'dark' ? 'light' : 'dark')} aria-label={tr('Cambiar tema')} title={tr('Cambiar tema')}>
             {theme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
           </button>
+          <LanguageSelector />
           <span className="tray-network"><Wifi size={15} /><PanelBottom size={14} /></span>
           <Clock />
         </div>
       </nav>
     </main>
+  )
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <WorkspaceApp />
+    </LanguageProvider>
   )
 }

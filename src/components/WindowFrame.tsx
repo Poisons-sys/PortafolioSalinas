@@ -1,5 +1,6 @@
 import { useRef, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { Maximize2, Minimize2, Minus, X } from 'lucide-react'
+import { useLanguage } from '../i18n'
 import type { AppDefinition, AppWindow } from '../types'
 
 interface WindowFrameProps {
@@ -37,6 +38,7 @@ export function WindowFrame({
   onMove,
   onResize,
 }: WindowFrameProps) {
+  const { tr } = useLanguage()
   const dragOrigin = useRef<PointerOrigin | null>(null)
   const resizeOrigin = useRef<PointerOrigin | null>(null)
 
@@ -139,14 +141,14 @@ export function WindowFrame({
           <span className={`window-app-icon app-icon-${definition.id}`}>{icon}</span>
           <span>{definition.title}</span>
         </div>
-        <div className="window-controls" aria-label="Controles de ventana">
-          <button type="button" onClick={onMinimize} aria-label={`Minimizar ${definition.shortTitle}`}>
+        <div className="window-controls" aria-label={tr('Controles de ventana')}>
+          <button type="button" onClick={onMinimize} aria-label={tr('Minimizar {name}', { name: definition.shortTitle })}>
             <Minus size={15} />
           </button>
-          <button type="button" onClick={onToggleMaximize} aria-label={`${windowState.isMaximized ? 'Restaurar' : 'Maximizar'} ${definition.shortTitle}`}>
+          <button type="button" onClick={onToggleMaximize} aria-label={tr(windowState.isMaximized ? 'Restaurar {name}' : 'Maximizar {name}', { name: definition.shortTitle })}>
             {windowState.isMaximized ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
           </button>
-          <button type="button" className="close-control" onClick={onClose} aria-label={`Cerrar ${definition.shortTitle}`}>
+          <button type="button" className="close-control" onClick={onClose} aria-label={tr('Cerrar {name}', { name: definition.shortTitle })}>
             <X size={15} />
           </button>
         </div>
@@ -156,7 +158,7 @@ export function WindowFrame({
         <button
           type="button"
           className="resize-handle"
-          aria-label={`Cambiar tamaño de ${definition.shortTitle}`}
+          aria-label={tr('Cambiar tamaño de {name}', { name: definition.shortTitle })}
           onPointerDown={beginResize}
           onPointerMove={moveResize}
           onPointerUp={endResize}

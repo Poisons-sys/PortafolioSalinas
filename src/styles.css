@@ -2757,6 +2757,117 @@ input:focus-visible {
 
 .system-tray > button { width: 31px; height: 34px; }
 
+.language-selector {
+  position: relative;
+  display: flex;
+}
+
+.language-selector > button {
+  display: grid;
+  width: 38px;
+  height: 34px;
+  padding: 0;
+  place-items: center;
+  color: var(--text);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+
+.language-selector > button span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.language-selector > button:hover,
+.language-selector > button.is-active {
+  background: var(--surface-soft);
+}
+
+.language-menu {
+  position: absolute;
+  right: -8px;
+  bottom: calc(100% + 14px);
+  width: 218px;
+  padding: 7px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 13px;
+  background: var(--taskbar);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.38), inset 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(28px) saturate(1.35);
+  animation: languageMenuIn 130ms ease-out both;
+}
+
+.language-menu-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px 9px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.language-menu-heading svg { color: var(--accent); }
+
+.language-menu > button {
+  display: grid;
+  width: 100%;
+  min-height: 38px;
+  grid-template-columns: 34px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 9px;
+  color: var(--muted-strong);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.language-menu > button:hover,
+.language-menu > button.is-active {
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+.language-menu > button > span {
+  display: grid;
+  width: 30px;
+  height: 22px;
+  place-items: center;
+  color: var(--accent);
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--accent-soft);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.language-menu > button strong {
+  overflow: hidden;
+  font-size: 10px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.language-menu > button i {
+  color: var(--accent);
+  font-size: 12px;
+  font-style: normal;
+  text-align: center;
+}
+
 .tray-network {
   display: flex;
   align-items: center;
@@ -3100,6 +3211,17 @@ input:focus-visible {
   .recent-card .project-visual.is-compact {
     width: 76px;
   }
+}
+
+@media (max-width: 360px) {
+  .taskbar-pinned > button:nth-child(5) {
+    display: none;
+  }
+}
+
+@keyframes languageMenuIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (forced-colors: active) {
